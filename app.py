@@ -22,11 +22,13 @@ command = input("""What would you like to do?
       *seed* the database \n""")
 
 # If they choose to add, use their input to populate an insert query
-
+last_id = conn.execute("SELECT ID FROM table FIGURE BY column DESC LIMIT 1;")
+print(f"The last id is {last_id}")
 if command == "add":
     fig_id = input("Id: ")
     figure_name = input("Figure Name: ")
-    starting_alignment = input("Starting Alignment: ")
+    starting_alignment = input("Starting Alignment
+                               : ")
     ending_alignment = input("Ending Alignment: ")
     steps = input("Number of Steps: ")
     starting_foot = input("Starting Foot: ")
