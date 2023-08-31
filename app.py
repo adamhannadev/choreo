@@ -17,6 +17,7 @@ conn.execute("""CREATE TABLE if not exists FIGURE
 
 # If they choose to add, use their input to populate an insert query
 final_row = conn.execute("SELECT * FROM FIGURE ORDER BY ID DESC LIMIT 1;").fetchone()
+first_row = conn.execute("SELECT * FROM FIGURE ORDER BY ID ASC LIMIT 1;").fetchone()
 print(f"The last id is {final_row[0]}")
 
 # Prompt the user for the action of their choice
@@ -26,9 +27,8 @@ command = input("""What would you like to do?
       *seed* the database \n""")
 
 
-
+# If they choose the add command, create a new record from data inputs
 if command == "add":
-    fig_id = input("Id: ")
     figure_name = input("Figure Name: ")
     starting_alignment = input("Starting Alignment: ")
     ending_alignment = input("Ending Alignment: ")
@@ -36,23 +36,40 @@ if command == "add":
     starting_foot = input("Starting Foot: ")
     ending_foot = input("Ending Foot: ")
 
-    conn.execute("INSERT INTO FIGURE VALUES (?,?,?,?,?,?,?)", (fig_id, figure_name, starting_alignment, ending_alignment, steps, starting_foot, ending_foot))
+    conn.execute("INSERT INTO FIGURE VALUES (?,?,?,?,?,?,?)", (final_row[0] + 1, figure_name, starting_alignment, ending_alignment, steps, starting_foot, ending_foot))
     conn.commit()
     print("Record created successfully.", conn.total_changes)
     conn.close()
+
 # If they choose to show the table, print out all records
 elif command == "show":
     curs = conn.execute("SELECT id, name, st_align, end_align, steps, st_foot, end_foot from FIGURE")
     for row in curs:
         print(f"ID: {row[0]}")
         print(f"Name: {row[1]}")
-        print(f"Starting Alignment: {row[2]}", "\n")
+        print(f"Starting Alignment: {row[2]}   ---   Ending Alignment: {row[3]}")
+        print(f"Starting Foot: {row[6]}   ---   Ending Foot: {row[6]}   ---   Steps: {row[4]}")
     print("Selection completed successfully.")
     conn.close()
+
+# If they choose to seed the database, enter preset values
 elif command == "seed":
     conn.execute(f"INSERT into FIGURE VALUES ({final_row[0] + 1},'Reverse Turn', 'DW', 'DC', 6, 'LF', 'RF')")
     conn.commit()
     print(conn.total_changes)
+elif command == "choreo":
+    routine = [first_row[1]]
+    print("The first row is: " + first_row[1])
+    curs = conn.execute("SELECT id, name, st_align, end_align, steps, st_foot, end_foot from FIGURE")
+    # Begin with the first figure
+    # Append a new figure to the routine if the preceding figure's ending alignment is the same as the following figure's starting alignment
+    # and the preceding ending foot is not the same as the following figure's starting foot
+    for figure in curs:
+        previous_figure = routine[-1]
+        print(previous_figure)
+        if figure[3] == first_row[2] and figure[6] != first_row[5]:
+            routine.append(figure[1])
+    print(routine)
 else:
     conn.close()
     print("Sorry, please choose from the available options.")
