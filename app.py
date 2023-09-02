@@ -47,7 +47,7 @@ elif command == "show":
         print(f"ID: {row[0]}")
         print(f"Name: {row[1]}")
         print(f"Starting Alignment: {row[2]}   ---   Ending Alignment: {row[3]}")
-        print(f"Starting Foot: {row[6]}   ---   Ending Foot: {row[6]}   ---   Steps: {row[4]}")
+        print(f"Starting Foot: {row[5]}   ---   Ending Foot: {row[6]}   ---   Steps: {row[4]}")
     print("Selection completed successfully.")
     conn.close()
 
@@ -62,7 +62,7 @@ elif command == "choreo":
     # Begin with the first figure
     # Append a new figure to the routine if the preceding figure's ending alignment is the same as the following figure's starting alignment
     # and the preceding ending foot is not the same as the following figure's starting foot
-    precede = curs[0]
+    precede = curs[2]
     print(f"Precede is {precede}")
     possible_follows = conn.execute(f"SELECT * from FIGURE WHERE ST_ALIGN = '{precede[3]}' AND NOT ST_FOOT = '{precede[6]}'").fetchall()
     print(f"Possible follows are - {possible_follows}")
