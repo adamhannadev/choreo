@@ -39,6 +39,7 @@ def show():
         print(f"Starting Foot: {row[4]}   ---   Ending Foot: {row[5]}")
     print("Selection completed successfully.")
     conn.close()
+    get_command()
 
 def choreo():
     curs = conn.execute("SELECT id, name, st_align, end_align, st_foot, end_foot from FIGURE").fetchall()
@@ -51,15 +52,17 @@ def choreo():
     print(f"Possible follows are - {possible_follows}")
     conn.close()
     print("Sorry, please choose from the available options.")
+    get_command()
 
 # Prompt the user for the action of their choice
-command = input("""What would you like to do?
-      *add* new figure,
-      *show* all figures,
-      *choreo*graph a new routine \n""")
-action = {'add': add, 'show': show, 'choreo': choreo}
-action[command]()
-
+def get_command():
+    command = input("""What would you like to do?
+        *add* new figure,
+        *show* all figures,
+        *choreo*graph a new routine \n""")
+    action = {'add': add, 'show': show, 'choreo': choreo}
+    action[command]()
+get_command()
 
 
 
