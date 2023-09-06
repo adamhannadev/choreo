@@ -5,12 +5,15 @@ from bs4 import BeautifulSoup
 import sqlite3
 
 # Get the urls to crawl from urls.txt
-f = open("urls.txt", "r")
-t = f.readlines()
-def stripme(str):
-    return str.strip()
-x = list(map(stripme, t))
-f.close
+def get_urls():
+    with open("urls.txt", "r") as f:
+        t = f.readlines()
+        def stripme(str):
+            return str.strip()
+        x = list(map(stripme, t))
+        return x
+    
+x = get_urls()
 
 # Request each page and parse the html response
 # Save the needed data into figure object

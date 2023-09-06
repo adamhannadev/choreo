@@ -19,6 +19,7 @@ http://idans.nl/workshop/standard/waltz/open_impetus.html
 http://idans.nl/workshop/standard/waltz/open_telemark.html
 http://idans.nl/workshop/standard/waltz/outside_change.html
 http://idans.nl/workshop/standard/waltz/outside_spin.html
+http://idans.nl/workshop/standard/waltz/prep_step.html
 http://idans.nl/workshop/standard/waltz/reverse_pivot.html
 http://idans.nl/workshop/standard/waltz/reverse_turn.html
 http://idans.nl/workshop/standard/waltz/spin_turn.html
