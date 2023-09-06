@@ -20,7 +20,11 @@ x = get_urls()
 # Add each figure to the database
 conn = sqlite3.connect('test.db')
 final_row = conn.execute("SELECT * FROM FIGURE ORDER BY ID DESC LIMIT 1;").fetchone()
-row_id = final_row[0]
+if final_row:
+    row_id = final_row[0]
+else:
+    row_id = 0
+    
 for url in x:
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
