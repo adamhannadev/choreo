@@ -1,5 +1,6 @@
 # This program takes figure input from the user and saves to the database.
 import sqlite3
+import random
 
 #  Connect to the 'test.db' database and create it if it doesn't exist.
 conn = sqlite3.connect('test.db')
@@ -45,17 +46,29 @@ def choreo():
     # Begin with the first figure
     # Append a new figure to the routine if the preceding figure's ending alignment is the same as the following figure's starting alignment
     # and the preceding ending foot is not the same as the following figure's starting foot
-    
+    routine = []
     precede = curs[int(input('Which figure would you like to start with? (ID)'))-1]
-    print(f"Precede is {precede}")
-    possible_follows = conn.execute(f"SELECT * from FIGURE WHERE ST_ALIGN = '{precede[3]}' AND NOT ST_FOOT = '{precede[5]}'").fetchall()
-    if len(possible_follows) > 0:
-        print(f"Possible follows are:")
-        for fol in possible_follows:
-            print(fol)
-    else:
-        print("Sorry there are no follows available.")
-    get_command()
+    routine.append(precede[1])
+    print(routine)
+   
+    def get_follow(precede):
+        possible_follows = conn.execute(f"SELECT * from FIGURE WHERE ST_ALIGN = '{precede[3]}' AND NOT ST_FOOT = '{precede[5]}'").fetchall()
+        if len(possible_follows) > 0:
+            print(f"Possible follows are:")
+            fol_list = list(possible_follows)
+            print(fol_list)
+            next_precede = possible_follows[random.randint(1,len(fol_list))]
+            print(f"Next Precede is {next_precede}")
+        else:
+            print("Sorry there are no follows available.")
+        return next_precede
+
+    i = 0
+    while i < 3:
+        next = get_follow(routine[-1])
+        routine.append(next)
+        i += 1
+    print(routine)
 
 # Prompt the user for the action of their choice
 def get_command():
